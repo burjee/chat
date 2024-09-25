@@ -1,0 +1,18 @@
+services:
+  app:
+    image: simple-chat:memory
+    build: .
+    container_name: simple-chat-memory
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./config/config.example.toml:/app/bin/config/config.toml
+      - ./counter.txt:/app/bin/counter.txt
+    working_dir: /app/bin
+    environment:
+      - GIN_MODE=release
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 128M

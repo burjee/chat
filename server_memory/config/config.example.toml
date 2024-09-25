@@ -1,0 +1,5 @@
+[chat]
+rooms = ["room0", "room1"]
+
+[pool]
+size = 10000

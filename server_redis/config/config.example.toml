@@ -1,0 +1,9 @@
+[chat]
+rooms = ["room0", "room1"]
+
+[pool]
+size = 10000
+
+[redis]
+host = "redis"
+port = "6379"

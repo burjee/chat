@@ -1,0 +1,22 @@
+config:
+  target: "ws://localhost:8000/ws"
+  processor: "./test.js"
+  phases:
+    - duration: 40
+      arrivalRate: 25
+      name: "1000 connections"
+
+scenarios:
+  - name: "join_and_message"
+    engine: ws
+    flow:
+      - think: 5
+      - function: "join"
+      - send: "{{ joinData }}"
+      - think: 40
+      - loop:
+          - function: "message"
+          - send: "{{ messageData }}"
+          - think: 2
+        count: 3
+      - think: 40

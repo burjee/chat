@@ -1,0 +1,51 @@
+services:
+  redis:
+    image: redis:alpine
+    container_name: redis
+
+  app_1:
+    image: simple-chat:redis
+    build: .
+    container_name: simple-chat-redis-1
+    volumes:
+      - ./config/config.example.toml:/app/bin/config/config.toml
+      - ./counter1.txt:/app/bin/counter.txt
+    working_dir: /app/bin
+    environment:
+      - GIN_MODE=release
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 128M
+    depends_on:
+      - redis
+
+  app_2:
+    image: simple-chat:redis
+    build: .
+    container_name: simple-chat-redis-2
+    volumes:
+      - ./config/config.example.toml:/app/bin/config/config.toml
+      - ./counter2.txt:/app/bin/counter.txt
+    working_dir: /app/bin
+    environment:
+      - GIN_MODE=release
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 128M
+    depends_on:
+      - redis
+
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - app_1
+      - app_2

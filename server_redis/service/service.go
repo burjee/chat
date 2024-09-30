@@ -65,7 +65,7 @@ func (s *service) WebsocketHandler(c *gin.Context) {
 		return
 	}
 
-	client := libs.NewClient(connection, s.hub.Unregister, s.counter)
+	client := libs.NewClient(connection, s.counter)
 	s.hub.Register <- client
 }
 

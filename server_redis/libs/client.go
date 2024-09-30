@@ -14,12 +14,11 @@ type Client struct {
 	Lock       *sync.Mutex
 	Connection net.Conn
 	Name       string
-	unregister chan net.Conn
 	counter    *Counter
 }
 
-func NewClient(connection net.Conn, unregister chan net.Conn, counter *Counter) *Client {
-	return &Client{Lock: &sync.Mutex{}, Name: "", Connection: connection, unregister: unregister, counter: counter}
+func NewClient(connection net.Conn, counter *Counter) *Client {
+	return &Client{Lock: &sync.Mutex{}, Name: "", Connection: connection, counter: counter}
 }
 
 func (c *Client) Response(error_text string, nonce string) {

@@ -9,7 +9,6 @@ services:
     container_name: simple-chat-redis-1
     volumes:
       - ./config/config.example.toml:/app/bin/config/config.toml
-      - ./counter1.txt:/app/bin/counter.txt
     working_dir: /app/bin
     environment:
       - GIN_MODE=release
@@ -27,7 +26,6 @@ services:
     container_name: simple-chat-redis-2
     volumes:
       - ./config/config.example.toml:/app/bin/config/config.toml
-      - ./counter2.txt:/app/bin/counter.txt
     working_dir: /app/bin
     environment:
       - GIN_MODE=release

@@ -8,17 +8,18 @@ import (
 	"sync"
 
 	"github.com/gobwas/ws/wsutil"
+	"github.com/rcrowley/go-metrics"
 )
 
 type Client struct {
 	Lock       *sync.Mutex
 	Connection net.Conn
 	Name       string
-	counter    *Counter
+	meter      metrics.Meter
 }
 
-func NewClient(connection net.Conn, counter *Counter) *Client {
-	return &Client{Lock: &sync.Mutex{}, Name: "", Connection: connection, counter: counter}
+func NewClient(connection net.Conn, meter metrics.Meter) *Client {
+	return &Client{Lock: &sync.Mutex{}, Name: "", Connection: connection, meter: meter}
 }
 
 func (c *Client) Response(error_text string, nonce string) {
@@ -37,5 +38,5 @@ func (c *Client) Write(message []byte) {
 	c.Lock.Lock()
 	defer c.Lock.Unlock()
 	wsutil.WriteServerText(c.Connection, message)
-	c.counter.Increment()
+	c.meter.Mark(1)
 }

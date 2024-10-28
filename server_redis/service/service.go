@@ -15,6 +15,7 @@ import (
 	"github.com/go-playground/validator/v10"
 	"github.com/gobwas/ws"
 	"github.com/gobwas/ws/wsutil"
+	"github.com/rcrowley/go-metrics"
 	"github.com/redis/go-redis/v9"
 	"golang.org/x/sys/unix"
 )
@@ -25,11 +26,11 @@ type service struct {
 	epoll        *libs.Epoll
 	hub          *libs.Hub
 	validate     *validator.Validate
-	counter      *libs.Counter
+	meter        metrics.Meter
 }
 
-func New(redis_client *redis.Client, information *libs.Information, epoll *libs.Epoll, hub *libs.Hub, validate *validator.Validate, counter *libs.Counter) *service {
-	return &service{redis_client, information, epoll, hub, validate, counter}
+func New(redis_client *redis.Client, information *libs.Information, epoll *libs.Epoll, hub *libs.Hub, validate *validator.Validate, meter metrics.Meter) *service {
+	return &service{redis_client, information, epoll, hub, validate, meter}
 }
 
 func (s *service) initWebsocketError(connection net.Conn, error_text string) {
@@ -65,7 +66,7 @@ func (s *service) WebsocketHandler(c *gin.Context) {
 		return
 	}
 
-	client := libs.NewClient(connection, s.counter)
+	client := libs.NewClient(connection, s.meter)
 	s.hub.Register <- client
 }
 

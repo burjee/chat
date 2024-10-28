@@ -6,6 +6,4 @@ Dockerfile
 
 .gitignore
 
-counter.txt
-
 README.md

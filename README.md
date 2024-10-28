@@ -35,7 +35,7 @@ npm install -g artillery@latest
 npx artillery run test.yaml
 ``` 
 
-## Match Metrics
+## Message Metrics
 
 You can view the logs of the server, which display the average messages per second for the past one minute, five minutes, fifteen minutes, and overall.
 

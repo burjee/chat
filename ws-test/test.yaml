@@ -18,5 +18,5 @@ scenarios:
           - function: "message"
           - send: "{{ messageData }}"
           - think: 2
-        count: 3
-      - think: 40
+        count: 10
+      - think: 80
